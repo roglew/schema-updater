@@ -1,6 +1,10 @@
 import os
 import glob
 
+## DEFINE THIS!!! ##
+def get_schema_version():
+    return 0
+
 def import_schema_files(schemas):
     # Finds and imports all schema_*.py files into the list
     module_files = glob.glob(os.path.dirname(os.path.abspath(__file__)) + "/schema_*.py")
@@ -9,10 +13,9 @@ def import_schema_files(schemas):
         newmod = __import__(module)
         schemas.append( (module, newmod) )
 
-def main():
+def update_schema():
     # Update the database schema to the latest version
-    #schema_version = db.meta.get_schema_version()
-    schema_version = 1
+    schema_version = get_schema_version()
     schemas = []
     import_schema_files(schemas)
     schemas = sorted(schemas, key=lambda tup: tup[0])
@@ -22,4 +25,4 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    update_schema()
